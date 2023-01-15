@@ -1497,14 +1497,22 @@ abstract class AbstractSchemaManager
             }
 
             if (! $defaultPrevented) {
-                $index = new Index(
-                    $data['name'],
-                    $data['columns'],
-                    $data['unique'],
-                    $data['primary'],
-                    $data['flags'],
-                    $data['options'],
-                );
+                $badColumn = false;
+                foreach ($data['columns'] as $column) {
+                  if ($column === null) {
+                    $badColumn = true;
+                  }
+                }
+                if (!$badColumn) {
+                  $index = new Index(
+                      $data['name'],
+                      $data['columns'],
+                      $data['unique'],
+                      $data['primary'],
+                      $data['flags'],
+                      $data['options'],
+                  );
+                }
             }
 
             if ($index === null) {
